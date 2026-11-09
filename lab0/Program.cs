@@ -12,6 +12,7 @@ namespace lab0
         {
             //labwork0
             // комментарий 1
+            // comment 2
         }
     }
 }
