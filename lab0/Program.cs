@@ -11,6 +11,7 @@ namespace lab0
         static void Main(string[] args)
         {
             //labwork0
+            // комментарий 1
         }
     }
 }
