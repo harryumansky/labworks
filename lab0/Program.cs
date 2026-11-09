@@ -15,6 +15,7 @@ namespace lab0
             // комментарий 1
             // comment 2
             // comment comment
+            // коммент в main
         }
     }
 }
