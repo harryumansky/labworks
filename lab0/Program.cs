@@ -8,7 +8,7 @@ namespace lab0
 {
     internal class Program
     {
-        //comment3
+        //comment3-1
         static void Main(string[] args)
         {
             //labwork0
