@@ -73,7 +73,13 @@ namespace lb1
             Console.WriteLine("\nВ список 1 добавлен человек");
             PrintPerson(personFromConsole);
             PrintList(list1, "Список 1 после добавления: ");
-            WaitForKey();                       
+            WaitForKey();
+
+            // Создание случайного человека
+            Person randomPerson = RandomPerson.GetRandomPerson();
+            Console.WriteLine("\nСоздан случайный человек:");
+            PrintPerson(randomPerson);
+            WaitForKey();
         }
 
         /// <summary>
