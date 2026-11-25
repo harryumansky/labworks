@@ -102,10 +102,25 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
-            string genderStr = person.Gender
-                == Gender.Man ? "Мужской" : "Женский";
-            Console.WriteLine($"{person.Name} {person.Surname}," +
-                $" возраст: {person.Age}, пол: {genderStr}");
+            string genderStr;
+            switch (person.Gender)
+            {
+                case Gender.Man:
+                    genderStr = "Мужской";
+                    break;
+
+                case Gender.Woman:
+                    genderStr = "Женский";
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        nameof(person.Gender),
+                        "Неизвестное значение пола");
+            }
+            Console.WriteLine(
+                $"{person.Name} {person.Surname}, " +
+                $"возраст: {person.Age}, пол: {genderStr}");
         }
 
         /// <summary>
