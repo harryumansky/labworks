@@ -113,7 +113,16 @@ namespace ClassLibrary1
         public Gender Gender
         {
             get { return _gender; }
-            set { _gender = value; }
+            set
+            {
+                if (!Enum.IsDefined(typeof(Gender), value))
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value),
+                        "Указано недопустимое значение пола.");
+                }
+                _gender = value;
+            }
         }
 
         /// <summary>
