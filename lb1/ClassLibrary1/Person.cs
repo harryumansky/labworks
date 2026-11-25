@@ -55,8 +55,9 @@ namespace ClassLibrary1
             get { return _name; }
             set
             {
-                _name = Validate(value, "Имя");
-                EnsureLanguage();
+                string validatedName = Validate(value, "Имя");
+                EnsureLanguage(validatedName, _surname);
+                _name = validatedName;
             }
         }
 
@@ -68,8 +69,9 @@ namespace ClassLibrary1
             get { return _surname; }
             set
             {
-                _surname = Validate(value, "Фамилия");
-                EnsureLanguage();
+                string validatedSurname = Validate(value, "Фамилия");
+                EnsureLanguage(_name, validatedSurname);
+                _surname = validatedSurname;
             }
         }
 
@@ -111,7 +113,16 @@ namespace ClassLibrary1
         public Gender Gender
         {
             get { return _gender; }
-            set { _gender = value; }
+            set
+            {
+                if (!Enum.IsDefined(typeof(Gender), value))
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value),
+                        "Указано недопустимое значение пола.");
+                }
+                _gender = value;
+            }
         }
 
         /// <summary>
@@ -157,30 +168,34 @@ namespace ClassLibrary1
         }
 
         /// <summary>
-        /// Проверка совпадаения языка имени и фамилии, если оба установлены
+        /// Проверка совпадения языка имени и фамилии
         /// </summary>
-        /// <exception cref="InvalidOperationException">Если язык имени
-        /// и фамилии не совпадают и оба поля установлены.</exception>
-        private void EnsureLanguage()
+        /// <param name="name">Имя для проверки</param>
+        /// <param name="surname">Фамилия для проверки</param>
+        /// <exception cref="ArgumentException">
+        /// Если язык имени и фамилии не совпадает
+        /// </exception>
+        private static void EnsureLanguage(
+            string name,
+            string surname)
         {
-            if (!string.IsNullOrEmpty(_name) && !string.IsNullOrEmpty(_surname))
+            if (!string.IsNullOrEmpty(name) &&
+                !string.IsNullOrEmpty(surname))
             {
-                bool nameIsRussian = Regex.IsMatch(_name, Russian);
-                bool surnameIsRussian = Regex.IsMatch(_surname, Russian);
+                bool nameIsRussian =
+                    Regex.IsMatch(name, Russian);
+
+                bool surnameIsRussian =
+                    Regex.IsMatch(surname, Russian);
 
                 if (nameIsRussian != surnameIsRussian)
                 {
-                    throw new InvalidOperationException(
+                    throw new ArgumentException(
                         "Язык имени и фамилии не совпадает. " +
                         "Имя и фамилия должны быть на одном языке.");
                 }
             }
-        }
-
-        /// <summary>
-        /// Создание нового экземпляра класса Person по умолчанию.
-        /// </summary>
-        public Person() { }
+        }       
     }
 }
 

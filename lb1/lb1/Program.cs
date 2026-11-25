@@ -102,10 +102,25 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
-            string genderStr = person.Gender
-                == Gender.Man ? "Мужской" : "Женский";
-            Console.WriteLine($"{person.Name} {person.Surname}," +
-                $" возраст: {person.Age}, пол: {genderStr}");
+            string genderStr;
+            switch (person.Gender)
+            {
+                case Gender.Man:
+                    genderStr = "Мужской";
+                    break;
+
+                case Gender.Woman:
+                    genderStr = "Женский";
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(
+                        nameof(person.Gender),
+                        "Неизвестное значение пола");
+            }
+            Console.WriteLine(
+                $"{person.Name} {person.Surname}, " +
+                $"возраст: {person.Age}, пол: {genderStr}");
         }
 
         /// <summary>
@@ -118,100 +133,62 @@ namespace lb1
         }
 
         /// <summary>
-        /// Ввод пользователя с консоли
+        /// Ввод данных о человеке с консоли
         /// </summary>
         /// <returns>Возвращает объект класса Person</returns>
         /// <exception cref="Exception">Создание при неверном вводе</exception>
         public static Person ReadFromConsole()
         {
-            var person = new Person();
-
-            var actionDictionary = new Dictionary<string, Action>()
-            {
-                {
-                    "Имя",
-                    new Action(() =>
-                    {
-                        person.Name = Console.ReadLine();
-                    })
-                },
-                {
-                    "Фамилия",
-                    new Action(() =>
-                    {
-                        person.Surname = Console.ReadLine();
-                        })
-                },
-                {
-                    "Возраст",
-                    new Action(() =>
-                    {
-                        if (int.TryParse(Console.ReadLine(), out int age))
-                        {
-                            person.Age = age;
-                        }
-                        else
-                        {
-                            throw new Exception("Введённая строка " +
-                                "не может быть преобразована в число");
-                        }
-                    })
-                },
-                {
-                    "Пол (1 — Мужчина, 2 — Женщина)",
-                    new Action(() =>
-                    {
-                        string input = Console.ReadLine();
-                        switch (input)
-                        {
-                            case "1":
-                            {
-                                person.Gender = Gender.Man;
-                                break;
-                            }
-                            case "2":
-                            {
-                                person.Gender = Gender.Woman;
-                                break;
-                            }
-                            default:
-                            {
-                                throw new Exception("Некорректный ввод" +
-                                        " Введите 1 или 2.");
-                            }
-
-                        }
-                    })
-                }
-            };
-
-            foreach (var actionHandler in actionDictionary)
-            {
-                ActionHandler(actionHandler.Value, actionHandler.Key);
-            }
-
-            return person;
-        }
-
-        /// <summary>
-        /// Повтор ввода при возникновении исключения
-        /// </summary>
-        /// <param name="action">Ввод и присваивание</param>
-        /// <param name="fieldName">Название поля</param>
-        private static void ActionHandler(Action action, string fieldName)
-        {
             while (true)
             {
+                Console.Write("Введите имя: ");
+                string name = Console.ReadLine();
+                Console.Write("Введите фамилию: ");
+                string surname = Console.ReadLine();
+                int age;
+                while (true)
+                {
+                    Console.Write("Введите возраст: ");
+                    if (int.TryParse(Console.ReadLine(), out age) &&
+                        age >= Person.MinAge &&
+                        age <= Person.MaxAge)
+                    {
+                        break;
+                    }
+                    Console.WriteLine(
+                        $"Введите целое число от {Person.MinAge} " +
+                        $"до {Person.MaxAge}.");
+                }
+                Gender gender;
+                while (true)
+                {
+                    Console.Write(
+                        "Введите пол (1 — Мужчина, 2 — Женщина): ");
+                    string input = Console.ReadLine();
+                    if (input == "1")
+                    {
+                        gender = Gender.Man;
+                        break;
+                    }
+                    if (input == "2")
+                    {
+                        gender = Gender.Woman;
+                        break;
+                    }
+                    Console.WriteLine(
+                        "Ошибка! Введите 1 или 2");
+                }
                 try
                 {
-                    Console.Write($"Введите {fieldName}: ");
-                    action.Invoke();
-                    return;
+                    return new Person(name, surname, age, gender);
                 }
-                catch (Exception exception)
+                catch (ArgumentException exception)
                 {
-                    Console.WriteLine($" Ошибка: {exception.Message}" +
-                        $" Попробуйте снова.");
+                    Console.WriteLine(
+                        $"Ошибка: {exception.Message}");
+
+                    Console.WriteLine(
+                        "Повторите ввод данных о человеке\n");
                 }
             }
         }

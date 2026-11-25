@@ -14,7 +14,7 @@ namespace ClassLibrary1
         /// <summary>
         /// Инициализация нового экземпляра класса с пустым списком
         /// </summary>
-        private List<Person> _persons;
+        private readonly List<Person> _persons;
 
         /// <summary>
         /// Конструктор класса по умолчанию
@@ -29,6 +29,12 @@ namespace ClassLibrary1
         /// </summary>
         public void Add(Person person)
         {
+            if (person == null)
+            {
+                throw new ArgumentNullException(
+                    nameof(person),
+                    "Нельзя добавить пустую строку в список");
+            }
             _persons.Add(person);
         }
 

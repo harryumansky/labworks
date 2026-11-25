@@ -37,7 +37,7 @@ namespace ClassLibrary1
                 ? Gender.Man
                 : Gender.Woman;
 
-            int age = random.Next(0, Person.MaxAge + 1);
+            int age = random.Next(Person.MinAge,Person.MaxAge + 1);
 
             string name = gender == Gender.Man
                 ? manNames[random.Next(manNames.Length)]
