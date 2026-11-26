@@ -93,6 +93,7 @@ namespace ClassLibrary1
             get { return _age; }
             set
             {
+                //TODO: remove
                 if (string.IsNullOrEmpty(Convert.ToString(value)))
                 {
                     throw new Exception("Введите возраст!");
@@ -115,6 +116,7 @@ namespace ClassLibrary1
             get { return _gender; }
             set
             {
+                //TODO: remove
                 if (!Enum.IsDefined(typeof(Gender), value))
                 {
                     throw new ArgumentOutOfRangeException(
@@ -158,6 +160,7 @@ namespace ClassLibrary1
             {
                 throw new ArgumentException(
                     $"{fieldName} может содержать только русские буквы" +
+                    //TODO: caps
                     $" ИЛИ только английские буквы. " +
                     $"Двойное имя/фамилия допускается через дефис.");
             }

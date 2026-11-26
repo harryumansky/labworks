@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//TODO: rename
 namespace ClassLibrary1
 {
     /// <summary>
@@ -15,6 +16,7 @@ namespace ClassLibrary1
         /// Пол - мужчина
         /// </summary>
         Man,
+
         /// <summary>
         /// Пол - женщина
         /// </summary>

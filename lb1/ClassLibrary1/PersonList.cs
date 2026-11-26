@@ -33,6 +33,7 @@ namespace ClassLibrary1
             {
                 throw new ArgumentNullException(
                     nameof(person),
+                    //TODO: redo
                     "Нельзя добавить пустую строку в список");
             }
             _persons.Add(person);
@@ -99,6 +100,7 @@ namespace ClassLibrary1
         {
             if (index < 0 || index >= _persons.Count)
             {
+                //TODO: RSDN
                 throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
             }
         }

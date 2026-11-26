@@ -102,18 +102,22 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
+            //TODO: RSDN
             string genderStr;
             switch (person.Gender)
             {
                 case Gender.Man:
+                    //TODO: {}
                     genderStr = "Мужской";
                     break;
 
                 case Gender.Woman:
+                    //TODO: {}
                     genderStr = "Женский";
                     break;
 
                 default:
+                    //TODO: {}
                     throw new ArgumentOutOfRangeException(
                         nameof(person.Gender),
                         "Неизвестное значение пола");
@@ -139,6 +143,7 @@ namespace lb1
         /// <exception cref="Exception">Создание при неверном вводе</exception>
         public static Person ReadFromConsole()
         {
+            //TODO: refactor
             while (true)
             {
                 Console.Write("Введите имя: ");
@@ -150,6 +155,7 @@ namespace lb1
                 {
                     Console.Write("Введите возраст: ");
                     if (int.TryParse(Console.ReadLine(), out age) &&
+                        //TODO: refactor
                         age >= Person.MinAge &&
                         age <= Person.MaxAge)
                     {
@@ -165,6 +171,7 @@ namespace lb1
                     Console.Write(
                         "Введите пол (1 — Мужчина, 2 — Женщина): ");
                     string input = Console.ReadLine();
+                    //TODO: switch-case
                     if (input == "1")
                     {
                         gender = Gender.Man;
