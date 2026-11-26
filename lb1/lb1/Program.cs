@@ -198,7 +198,6 @@ namespace lb1
             return person;
         }
 
-        //TODO: XML+
         /// <summary>
         /// Метод проверки вводимых данных
         /// </summary>
