@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary1
+//TODO: rename +
+namespace Model
 {
     /// <summary>
     /// Пол человека
