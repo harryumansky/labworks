@@ -93,7 +93,6 @@ namespace PersonLib
             get { return _age; }
             set
             {
-                //TODO: remove+                
                 if (value < MinAge || value > MaxAge)
                 {                   
                     throw new ArgumentOutOfRangeException(nameof(value),
@@ -112,7 +111,6 @@ namespace PersonLib
             get { return _gender; }
             set
             {
-                //TODO: remove+               
                 _gender = value;
             }
         }
@@ -150,7 +148,6 @@ namespace PersonLib
             {
                 throw new ArgumentException(
                     $"{fieldName} может содержать только русские буквы" +
-                    //TODO: caps+
                     $" или только английские буквы. " +
                     $"Двойное имя/фамилия допускается через дефис.");
             }

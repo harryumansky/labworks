@@ -33,7 +33,6 @@ namespace PersonLib
             {
                 throw new ArgumentNullException(
                     nameof(person),
-                    //TODO: redo+
                     "Нельзя добавить пустой объект в список");
             }
             _persons.Add(person);
@@ -100,7 +99,6 @@ namespace PersonLib
         {
             if (index < 0 || index >= _persons.Count)
             {
-                //TODO: RSDN+
                 throw new ArgumentOutOfRangeException(nameof(index),
                     "Индекс вне диапазона");
             }

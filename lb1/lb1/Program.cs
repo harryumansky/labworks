@@ -102,26 +102,23 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
-            //TODO: RSDN+
+            //TODO: RSDN
             string genderStr;
             switch (person.Gender)
             {
                 case Gender.Man:
                 { 
-                    //TODO: {}+
                     genderStr = "Мужской";
                     break;
                 }
 
                 case Gender.Woman:
                 {
-                    //TODO: {}+
                     genderStr = "Женский";
                     break;
                 }
 
                 default:
-                    //TODO: {}+
                 {
                     throw new ArgumentOutOfRangeException(
                         nameof(person.Gender),
@@ -152,7 +149,8 @@ namespace lb1
             //TODO: refactor
             while (true)
             {
-                //TODO: refactor+
+                //TODO: duplication
+                //TODO: refactor
                 string name;
                 while (true)
                 {
@@ -169,7 +167,8 @@ namespace lb1
                     }
                 }
 
-                //TODO: refactor+
+                //TODO: duplication
+                //TODO: refactor
                 string surname;
                 while (true)
                 {
@@ -208,7 +207,6 @@ namespace lb1
                 {
                     Console.Write("Введите пол (1 — Мужчина, 2 — Женщина): ");
                     string input = Console.ReadLine();
-                    //TODO: switch-case+
                     switch (input)
                     {
                         case "1":

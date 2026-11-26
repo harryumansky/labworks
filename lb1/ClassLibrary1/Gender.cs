@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//TODO: rename+
 namespace PersonLib
 {
     /// <summary>
