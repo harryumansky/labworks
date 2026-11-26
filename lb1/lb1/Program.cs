@@ -198,7 +198,16 @@ namespace lb1
             return person;
         }
 
-        //TODO: XML
+        //TODO: XML+
+        /// <summary>
+        /// Метод проверки вводимых данных
+        /// </summary>
+        /// <param name="message">
+        /// Аргумент для передачи строки в метод при его вызове
+        /// </param>
+        /// <param name="action">
+        /// Сохраняет и передает введеное в консоли значение
+        /// </param>
         private static void ActionHandler(string message, Action<string> action)
         {
             while (true)
