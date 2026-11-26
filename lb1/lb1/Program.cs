@@ -148,117 +148,79 @@ namespace lb1
         {
             Person person = new Person();
 
-            Verifire("Введите имя: ", input => person.Name = input);
-            Verifire("Введите фамилию: ", input => person.Surname = input);
-            //TODO: duplication+
-            AgeVerifire("Введите возраст от 1 до 123: ", 
-                         age => person.Age = age);
-            GenderVerifire("Введите пол (1 — Мужчина, 2 — Женщина): ", 
-                            gender => person.Gender = gender);
+            var actionList = new List<Tuple<string, Action<string>>>()
+            {
+                new("Введите имя: ",
+                    (input) =>
+                    {
+                        person.Name = input;
+                    }),
+                new("Введите фамилию: ",
+                    (input) =>
+                    {
+                        person.Surname = input;
+                    }),
+                new("Введите возраст от 1 до 123: ",
+                    (input) =>
+                    {
+                        int parsedAge = int.Parse(input);
+                        person.Age = parsedAge;
+                    }),
+                new("Введите пол (1 — Мужчина, 2 — Женщина): ",
+                    (input) =>
+                    {
+                        string innerInput = input ?? string.Empty;
+                        switch (innerInput)
+                        {
+                            case "1":
+                            {
+                                person.Gender = Gender.Man;
+                                break;
+                            }
+                            case "2":
+                            {
+                                person.Gender = Gender.Woman ;
+                                break;
+                            }
+                            default:
+                            {
+                                throw new ArgumentException("Ошибка! Введите 1 или 2");
+                            }
+                        }
+                    }),
+            };
+
+            foreach(var action in actionList)
+            {
+                ActionHandler(action.Item1, action.Item2);
+            }
 
             return person;
         }
 
-        //TODO: XML+
-        /// <summary>
-        /// Вспомогательный метод для проверки имени и фамилии
-        /// </summary>
-        /// <param name="prompt">
-        /// Аргумент для передачи в метод при его вызове
-        /// </param>
-        /// <param name="property">
-        /// Сохраняет введеное в консоли значение
-        /// </param>
-        private static void Verifire(string prompt, Action<string> property)
+        //TODO: XML
+        private static void ActionHandler(string message, Action<string> action)
         {
             while (true)
             {
-                Console.Write(prompt);
-                string input = Console.ReadLine();
+                Console.Write(message);
+                
                 try
                 {
-                    property(input);
+                    string input = Console.ReadLine();
+                    action(input);
                     return;
                 }
-                catch (ArgumentException ex)
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"Ошибка: {ex.Message}");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Вспомогательный метод для проверки возраста
-        /// </summary>
-        /// <param name="prompt">
-        /// Аргумент для передачи в метод при его вызове
-        /// </param>
-        /// <param name="property">
-        /// Сохраняет введеное в консоли значение
-        /// </param>
-        private static void AgeVerifire(string prompt, Action<int> property)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                string input = Console.ReadLine();
-
-                if (int.TryParse(input, out int value))
-                {
-                    try
-                    {
-                        property(value);
-                        return;
-                    }
-                    catch (ArgumentException)
-                    {
-                        Console.WriteLine($"Ошибка: Возраст должен " +
-                                          $"быть от 1 до 123");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: Введите целое число.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Вспомогательный метод для проверки пола
-        /// </summary>
-        /// <param name="prompt">
-        /// Аргумент для передачи в метод при его вызове
-        /// </param>
-        /// <param name="property">
-        /// Сохраняет введеное в консоли значение
-        /// </param>
-        private static void GenderVerifire(string prompt, 
-            Action<Gender> property)
-        {
-            while (true)
-            {
-                Console.Write(prompt);
-                string input = Console.ReadLine() ?? string.Empty;
-
-                switch (input)
-                {
-                    case "1":
-                    {
-                        property(Gender.Man);
-                        return;
-                    }
-                    case "2":
-                    {
-                        property(Gender.Woman);
-                        return;
-                    }
-                    default:
-                    {
-                        Console.WriteLine("Ошибка! Введите 1 или 2");
-                        break;
+                    if (ex.GetType() == typeof(ArgumentException)
+                        || ex.GetType() == typeof(FormatException)
+                        || ex.GetType() == typeof(ArgumentOutOfRangeException))
+                    { 
+                        Console.WriteLine($"Ошибка: {ex.Message}");
                     }
                 }
             }
-        }
+        }        
     }
 }
