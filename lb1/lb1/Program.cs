@@ -1,4 +1,4 @@
-﻿using ClassLibrary1;
+﻿using PersonLib;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -102,25 +102,31 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
-            //TODO: RSDN
+            //TODO: RSDN+
             string genderStr;
             switch (person.Gender)
             {
                 case Gender.Man:
-                    //TODO: {}
+                { 
+                    //TODO: {}+
                     genderStr = "Мужской";
                     break;
+                }
 
                 case Gender.Woman:
-                    //TODO: {}
+                {
+                    //TODO: {}+
                     genderStr = "Женский";
                     break;
+                }
 
                 default:
-                    //TODO: {}
+                    //TODO: {}+
+                {
                     throw new ArgumentOutOfRangeException(
                         nameof(person.Gender),
                         "Неизвестное значение пола");
+                }
             }
             Console.WriteLine(
                 $"{person.Name} {person.Surname}, " +
@@ -141,15 +147,46 @@ namespace lb1
         /// </summary>
         /// <returns>Возвращает объект класса Person</returns>
         /// <exception cref="Exception">Создание при неверном вводе</exception>
-        public static Person ReadFromConsole()
+        public static Person ReadFromConsole()   
         {
             //TODO: refactor
             while (true)
             {
-                Console.Write("Введите имя: ");
-                string name = Console.ReadLine();
-                Console.Write("Введите фамилию: ");
-                string surname = Console.ReadLine();
+                //TODO: refactor+
+                string name;
+                while (true)
+                {
+                    Console.Write("Введите имя: ");
+                    string input = Console.ReadLine();
+                    try
+                    {                        
+                        name = Person.Verificate(input, "Имя");
+                        break;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine($"Ошибка: {ex.Message}");
+                    }
+                }
+
+                //TODO: refactor+
+                string surname;
+                while (true)
+                {
+                    Console.Write("Введите фамилию: ");
+                    string input = Console.ReadLine();
+                    try
+                    {
+                        surname = Person.Verificate(input, "Фамилия");
+                        Person.EnsureLanguage(name, surname);
+                        break;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine($"Ошибка: {ex.Message}");
+                    }
+                }
+
                 int age;
                 while (true)
                 {
@@ -165,37 +202,42 @@ namespace lb1
                         $"Введите целое число от {Person.MinAge} " +
                         $"до {Person.MaxAge}.");
                 }
+
                 Gender gender;
                 while (true)
                 {
-                    Console.Write(
-                        "Введите пол (1 — Мужчина, 2 — Женщина): ");
+                    Console.Write("Введите пол (1 — Мужчина, 2 — Женщина): ");
                     string input = Console.ReadLine();
-                    //TODO: switch-case
-                    if (input == "1")
+                    //TODO: switch-case+
+                    switch (input)
                     {
-                        gender = Gender.Man;
-                        break;
+                        case "1":
+                        {
+                            gender = Gender.Man;
+                            break;
+                        }
+                        case "2":
+                        {
+                            gender = Gender.Woman;
+                            break;
+                        }
+                        default:
+                        {
+                            Console.WriteLine("Ошибка! Введите 1 или 2");
+                            continue;
+                        }
                     }
-                    if (input == "2")
-                    {
-                        gender = Gender.Woman;
-                        break;
-                    }
-                    Console.WriteLine(
-                        "Ошибка! Введите 1 или 2");
+                    break;
                 }
+
                 try
                 {
                     return new Person(name, surname, age, gender);
                 }
                 catch (ArgumentException exception)
                 {
-                    Console.WriteLine(
-                        $"Ошибка: {exception.Message}");
-
-                    Console.WriteLine(
-                        "Повторите ввод данных о человеке\n");
+                    Console.WriteLine($"Ошибка: {exception.Message}");
+                    Console.WriteLine("Повторите ввод данных о человеке\n");
                 }
             }
         }
