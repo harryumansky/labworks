@@ -102,7 +102,6 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
-            //TODO: RSDN+
             string genderWritable;
             switch (person.Gender)
             {
@@ -146,16 +145,15 @@ namespace lb1
         /// <exception cref="Exception">Создание при неверном вводе</exception>
         public static Person ReadFromConsole()   
         {
-            //TODO: refactor+
-            //TODO: duplication+
             Person person = new Person();
+
             Verifire("Введите имя: ", input => person.Name = input);
             Verifire("Введите фамилию: ", input => person.Surname = input);
 
-            //TODO: refactor+
             while (true)
             {
                 Console.Write("Введите возраст: ");
+                //TODO: duplication
                 if (int.TryParse(Console.ReadLine(), out int age))
                 {
                     try
@@ -174,6 +172,7 @@ namespace lb1
                     Console.WriteLine("Ошибка: Введите целое число.");
                 }
             }
+
             while (true)
             {
                 Console.Write("Введите пол (1 — Мужчина, 2 — Женщина): ");
@@ -198,9 +197,11 @@ namespace lb1
                 }
             }            
         }
+
         /// <summary>
         /// Вспомогательный метод для проверки имени и фамилии 
         /// </summary>
+        /// //TODO: XML
         private static void Verifire(string prompt, Action<string> property)
         {
             while (true)
