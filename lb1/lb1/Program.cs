@@ -210,7 +210,7 @@ namespace lb1
                         property(value);
                         return;
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentException)
                     {
                         Console.WriteLine($"Ошибка: Возраст должен " +
                                           $"быть от 1 до 123");
