@@ -38,7 +38,8 @@ namespace lb1
             WaitForKey();
 
             // Включение нового человека в первый список
-            Person newPerson = new Person("Юлия", "Андреева", 41, Gender.Woman);
+            Person newPerson = new Person("Юлия", "Андреева", 
+                                           41, Gender.Woman);
             list1.Add(newPerson);
             Console.WriteLine("\nДобавили нового человека в первый список:");
             PrintList(list1, "Список 1");
@@ -120,8 +121,8 @@ namespace lb1
                 default:
                 {
                     throw new ArgumentOutOfRangeException(
-                        nameof(person.Gender),
-                        "Неизвестное значение пола");
+                            nameof(person.Gender),
+                            "Неизвестное значение пола");
                 }
             }
             Console.WriteLine(
@@ -134,7 +135,8 @@ namespace lb1
         /// </summary>
         private static void WaitForKey()
         {
-            Console.WriteLine("\nНажмите любую клавишу, чтобы продолжить...");
+            Console.WriteLine("\nНажмите любую клавишу, " +
+                                "чтобы продолжить...");
             Console.ReadKey();
         }
 
@@ -142,66 +144,31 @@ namespace lb1
         /// Ввод данных о человеке с консоли
         /// </summary>
         /// <returns>Возвращает объект класса Person</returns>
-        /// <exception cref="Exception">Создание при неверном вводе</exception>
         public static Person ReadFromConsole()   
         {
             Person person = new Person();
 
             Verifire("Введите имя: ", input => person.Name = input);
             Verifire("Введите фамилию: ", input => person.Surname = input);
+            //TODO: duplication+
+            AgeVerifire("Введите возраст от 1 до 123: ", 
+                         age => person.Age = age);
+            GenderVerifire("Введите пол (1 — Мужчина, 2 — Женщина): ", 
+                            gender => person.Gender = gender);
 
-            while (true)
-            {
-                Console.Write("Введите возраст: ");
-                //TODO: duplication
-                if (int.TryParse(Console.ReadLine(), out int age))
-                {
-                    try
-                    {
-                        person.Age = age;
-                        break;
-                    }
-                    catch (ArgumentOutOfRangeException)
-                    {
-                        Console.WriteLine($"Ошибка: " +
-                            $"Возраст должен быть от 1 до 123");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка: Введите целое число.");
-                }
-            }
-
-            while (true)
-            {
-                Console.Write("Введите пол (1 — Мужчина, 2 — Женщина): ");
-                string input = Console.ReadLine();
-                switch (input)
-                {
-                    case "1":
-                    {
-                        person.Gender = Gender.Man;
-                        return person;
-                    }
-                    case "2":
-                    {
-                        person.Gender = Gender.Woman;
-                        return person;
-                    }
-                    default:
-                    {
-                        Console.WriteLine("Ошибка! Введите 1 или 2");
-                        continue;
-                    }
-                }
-            }            
+            return person;
         }
 
+        //TODO: XML+
         /// <summary>
-        /// Вспомогательный метод для проверки имени и фамилии 
+        /// Вспомогательный метод для проверки имени и фамилии
         /// </summary>
-        /// //TODO: XML
+        /// <param name="prompt">
+        /// Аргумент для передачи в метод при его вызове
+        /// </param>
+        /// <param name="property">
+        /// Сохраняет введеное в консоли значение
+        /// </param>
         private static void Verifire(string prompt, Action<string> property)
         {
             while (true)
@@ -216,6 +183,80 @@ namespace lb1
                 catch (ArgumentException ex)
                 {
                     Console.WriteLine($"Ошибка: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Вспомогательный метод для проверки возраста
+        /// </summary>
+        /// <param name="prompt">
+        /// Аргумент для передачи в метод при его вызове
+        /// </param>
+        /// <param name="property">
+        /// Сохраняет введеное в консоли значение
+        /// </param>
+        private static void AgeVerifire(string prompt, Action<int> property)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out int value))
+                {
+                    try
+                    {
+                        property(value);
+                        return;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        Console.WriteLine($"Ошибка: Возраст должен " +
+                                          $"быть от 1 до 123");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ошибка: Введите целое число.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Вспомогательный метод для проверки пола
+        /// </summary>
+        /// <param name="prompt">
+        /// Аргумент для передачи в метод при его вызове
+        /// </param>
+        /// <param name="property">
+        /// Сохраняет введеное в консоли значение
+        /// </param>
+        private static void GenderVerifire(string prompt, 
+            Action<Gender> property)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine() ?? string.Empty;
+
+                switch (input)
+                {
+                    case "1":
+                    {
+                        property(Gender.Man);
+                        return;
+                    }
+                    case "2":
+                    {
+                        property(Gender.Woman);
+                        return;
+                    }
+                    default:
+                    {
+                        Console.WriteLine("Ошибка! Введите 1 или 2");
+                        break;
+                    }
                 }
             }
         }
