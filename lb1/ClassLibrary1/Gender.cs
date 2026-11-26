@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//TODO: rename +
-namespace Model
+//TODO: rename+
+namespace PersonLib
 {
     /// <summary>
     /// Пол человека
@@ -16,6 +16,7 @@ namespace Model
         /// Пол - мужчина
         /// </summary>
         Man,
+
         /// <summary>
         /// Пол - женщина
         /// </summary>

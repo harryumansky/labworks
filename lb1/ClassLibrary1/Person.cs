@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Model
+namespace PersonLib
 {
     /// <summary>
     /// Класс хранения и обработки данных о человеке
@@ -55,9 +55,9 @@ namespace Model
             get { return _name; }
             set
             {
-                string validatedName = Validate(value, "Имя");
-                EnsureLanguage(validatedName, _surname);
-                _name = validatedName;
+                string verificatedName = Verificate(value, "Имя");
+                EnsureLanguage(verificatedName, _surname);
+                _name = verificatedName;
             }
         }
 
@@ -69,9 +69,9 @@ namespace Model
             get { return _surname; }
             set
             {
-                string validatedSurname = Validate(value, "Фамилия");
-                EnsureLanguage(_name, validatedSurname);
-                _surname = validatedSurname;
+                string verificatedSurname = Verificate(value, "Фамилия");
+                EnsureLanguage(_name, verificatedSurname);
+                _surname = verificatedSurname;
             }
         }
 
@@ -93,15 +93,12 @@ namespace Model
             get { return _age; }
             set
             {
-                if (string.IsNullOrEmpty(Convert.ToString(value)))
-                {
-                    throw new Exception("Введите возраст!");
-                }
-
+                //TODO: remove+                
                 if (value < MinAge || value > MaxAge)
-                {
-                    throw new Exception($"{nameof(Age)} должен быть в дипазоне" +
-                        $" от {MinAge} до {MaxAge}");
+                {                   
+                    throw new ArgumentOutOfRangeException(nameof(value),
+                        $"{nameof(Age)} должен быть в диапазоне" +
+                        $"от {MinAge} до {MaxAge}");
                 }
                 _age = value;
             }
@@ -115,12 +112,7 @@ namespace Model
             get { return _gender; }
             set
             {
-                if (!Enum.IsDefined(typeof(Gender), value))
-                {
-                    throw new ArgumentOutOfRangeException(
-                        nameof(value),
-                        "Указано недопустимое значение пола.");
-                }
+                //TODO: remove+               
                 _gender = value;
             }
         }
@@ -142,7 +134,7 @@ namespace Model
         /// <param name="fieldName">Название поля</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">при неверном вводе</exception>
-        private static string Validate(string value, string fieldName)
+        public static string Verificate(string value, string fieldName)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -158,7 +150,8 @@ namespace Model
             {
                 throw new ArgumentException(
                     $"{fieldName} может содержать только русские буквы" +
-                    $" ИЛИ только английские буквы. " +
+                    //TODO: caps+
+                    $" или только английские буквы. " +
                     $"Двойное имя/фамилия допускается через дефис.");
             }
 
@@ -175,7 +168,7 @@ namespace Model
         /// <exception cref="ArgumentException">
         /// Если язык имени и фамилии не совпадает
         /// </exception>
-        private static void EnsureLanguage(
+        public static void EnsureLanguage(
             string name,
             string surname)
         {

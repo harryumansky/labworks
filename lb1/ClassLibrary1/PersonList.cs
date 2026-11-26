@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model
+namespace PersonLib
 {
     /// <summary>
     /// Класс списка людей
@@ -33,11 +33,12 @@ namespace Model
             {
                 throw new ArgumentNullException(
                     nameof(person),
-                    "Нельзя добавить пустую строку в список");
+                    //TODO: redo+
+                    "Нельзя добавить пустой объект в список");
             }
             _persons.Add(person);
         }
-
+        
         /// <summary>
         /// Удаление указанного человека из списка
         /// </summary>
@@ -99,7 +100,9 @@ namespace Model
         {
             if (index < 0 || index >= _persons.Count)
             {
-                throw new ArgumentOutOfRangeException(nameof(index), "Индекс вне диапазона");
+                //TODO: RSDN+
+                throw new ArgumentOutOfRangeException(nameof(index),
+                    "Индекс вне диапазона");
             }
         }
     }
