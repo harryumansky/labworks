@@ -102,19 +102,19 @@ namespace lb1
         /// <param name="person">Объект Person для вывода</param>
         private static void PrintPerson(Person person)
         {
-            //TODO: RSDN
-            string genderStr;
+            //TODO: RSDN+
+            string genderWritable;
             switch (person.Gender)
             {
                 case Gender.Man:
                 { 
-                    genderStr = "Мужской";
+                    genderWritable = "Мужской";
                     break;
                 }
 
                 case Gender.Woman:
                 {
-                    genderStr = "Женский";
+                    genderWritable = "Женский";
                     break;
                 }
 
@@ -127,7 +127,7 @@ namespace lb1
             }
             Console.WriteLine(
                 $"{person.Name} {person.Surname}, " +
-                $"возраст: {person.Age}, пол: {genderStr}");
+                $"возраст: {person.Age}, пол: {genderWritable}");
         }
 
         /// <summary>
@@ -146,96 +146,75 @@ namespace lb1
         /// <exception cref="Exception">Создание при неверном вводе</exception>
         public static Person ReadFromConsole()   
         {
-            //TODO: refactor
+            //TODO: refactor+
+            //TODO: duplication+
+            Person person = new Person();
+            Verifire("Введите имя: ", input => person.Name = input);
+            Verifire("Введите фамилию: ", input => person.Surname = input);
+
+            //TODO: refactor+
             while (true)
             {
-                //TODO: duplication
-                //TODO: refactor
-                string name;
-                while (true)
+                Console.Write("Введите возраст: ");
+                if (int.TryParse(Console.ReadLine(), out int age))
                 {
-                    Console.Write("Введите имя: ");
-                    string input = Console.ReadLine();
-                    try
-                    {                        
-                        name = Person.Verificate(input, "Имя");
-                        break;
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        Console.WriteLine($"Ошибка: {ex.Message}");
-                    }
-                }
-
-                //TODO: duplication
-                //TODO: refactor
-                string surname;
-                while (true)
-                {
-                    Console.Write("Введите фамилию: ");
-                    string input = Console.ReadLine();
                     try
                     {
-                        surname = Person.Verificate(input, "Фамилия");
-                        Person.EnsureLanguage(name, surname);
+                        person.Age = age;
                         break;
                     }
-                    catch (ArgumentException ex)
+                    catch (ArgumentOutOfRangeException)
                     {
-                        Console.WriteLine($"Ошибка: {ex.Message}");
+                        Console.WriteLine($"Ошибка: " +
+                            $"Возраст должен быть от 1 до 123");
                     }
                 }
-
-                int age;
-                while (true)
+                else
                 {
-                    Console.Write("Введите возраст: ");
-                    if (int.TryParse(Console.ReadLine(), out age) &&
-                        //TODO: refactor
-                        age >= Person.MinAge &&
-                        age <= Person.MaxAge)
-                    {
-                        break;
-                    }
-                    Console.WriteLine(
-                        $"Введите целое число от {Person.MinAge} " +
-                        $"до {Person.MaxAge}.");
+                    Console.WriteLine("Ошибка: Введите целое число.");
                 }
-
-                Gender gender;
-                while (true)
+            }
+            while (true)
+            {
+                Console.Write("Введите пол (1 — Мужчина, 2 — Женщина): ");
+                string input = Console.ReadLine();
+                switch (input)
                 {
-                    Console.Write("Введите пол (1 — Мужчина, 2 — Женщина): ");
-                    string input = Console.ReadLine();
-                    switch (input)
+                    case "1":
                     {
-                        case "1":
-                        {
-                            gender = Gender.Man;
-                            break;
-                        }
-                        case "2":
-                        {
-                            gender = Gender.Woman;
-                            break;
-                        }
-                        default:
-                        {
-                            Console.WriteLine("Ошибка! Введите 1 или 2");
-                            continue;
-                        }
+                        person.Gender = Gender.Man;
+                        return person;
                     }
-                    break;
+                    case "2":
+                    {
+                        person.Gender = Gender.Woman;
+                        return person;
+                    }
+                    default:
+                    {
+                        Console.WriteLine("Ошибка! Введите 1 или 2");
+                        continue;
+                    }
                 }
-
+            }            
+        }
+        /// <summary>
+        /// Вспомогательный метод для проверки имени и фамилии 
+        /// </summary>
+        private static void Verifire(string prompt, Action<string> property)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
                 try
                 {
-                    return new Person(name, surname, age, gender);
+                    property(input);
+                    return;
                 }
-                catch (ArgumentException exception)
+                catch (ArgumentException ex)
                 {
-                    Console.WriteLine($"Ошибка: {exception.Message}");
-                    Console.WriteLine("Повторите ввод данных о человеке\n");
+                    Console.WriteLine($"Ошибка: {ex.Message}");
                 }
             }
         }

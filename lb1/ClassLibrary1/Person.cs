@@ -33,6 +33,11 @@ namespace PersonLib
         private Gender _gender;
 
         /// <summary>
+        /// Создание конструктора без начальных данных
+        /// </summary>
+        public Person(){}
+
+        /// <summary>
         /// Создание информации о человеке
         /// </summary>
         /// <param name="name">Имя</param>
@@ -132,7 +137,7 @@ namespace PersonLib
         /// <param name="fieldName">Название поля</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">при неверном вводе</exception>
-        public static string Verificate(string value, string fieldName)
+        private static string Verificate(string value, string fieldName)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -165,7 +170,7 @@ namespace PersonLib
         /// <exception cref="ArgumentException">
         /// Если язык имени и фамилии не совпадает
         /// </exception>
-        public static void EnsureLanguage(
+        private static void EnsureLanguage(
             string name,
             string surname)
         {
